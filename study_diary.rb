@@ -1,3 +1,18 @@
+def clear
+  system('clear')
+end
+
+def wait_keypress
+  puts
+  puts 'Pressione enter para continuar'
+  gets
+end
+
+def clear_and_wait_keypress
+  wait_keypress
+  clear
+end
+
 def welcome
   'Bem-vindo ao Diário de Estudos, seu companheiro para estudar!'
 end
@@ -37,21 +52,27 @@ def search_items(collection)
   puts 'Nenhum item encontrado' if collection.empty?
 end
 
+clear
 puts welcome
 study_items = []
 option = menu
 
-while option != 4
-  if option == 1
+loop do
+  clear
+  case option
+  when 1
     study_items << register_study_item
-  elsif option == 2
+  when 2
     print_items(study_items)
-  elsif option == 3
+  when 3
     search_items(study_items)
+  when 4
+    clear
+    puts 'Obrigado por usar o Diário de Estudos'
+    break
   else
     puts 'Opção inválida'
   end
+  clear_and_wait_keypress
   option = menu
 end
-
-puts 'Obrigado por usar o Diário de Estudos'
