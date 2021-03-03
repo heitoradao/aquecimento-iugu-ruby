@@ -35,18 +35,18 @@ def menu
   gets.to_i
 end
 
-def register_study_item
+def register_study_item(id)
   print 'Digite o título do seu item de estudo: '
   title = gets.chomp
   print 'Digite a categoria do seu item de estudo: '
   category = gets.chomp
   puts "Item '#{title}' da categoria '#{category}' cadastrado com sucesso!"
-  StudyItem.new(title, category)
+  StudyItem.new(id, title, category)
 end
 
 def print_items(collection)
-  collection.each_with_index do |item, index|
-    puts "##{index + 1} - #{item.title} - #{item.category}"
+  collection.each do |item|
+    puts "##{item.id} - #{item.title} - #{item.category}"
   end
   puts 'Nenhum item encontrado' if collection.empty?
 end
@@ -64,12 +64,14 @@ clear
 puts welcome
 study_items = []
 option = menu
+index = 1
 
 loop do
   clear
   case option
   when REGISTER
-    study_items << register_study_item
+    study_items << register_study_item(index)
+    index  += 1
   when VIEW
     print_items(study_items)
   when SEARCH
