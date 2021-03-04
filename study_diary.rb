@@ -55,7 +55,7 @@ def search_items(collection)
   print 'Digite uma palavra para procurar: '
   term = gets.chomp
   found_items = collection.filter do |item|
-    item.title.include?(term)
+    item.include?(term)
   end
   print_items(found_items)
 end

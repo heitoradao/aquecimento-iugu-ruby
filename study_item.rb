@@ -10,4 +10,8 @@ class StudyItem
     @@next_id += 1
   end
 
+  def include?(query)
+    title.include?(query) || category.include?(query)
+  end
+
 end
