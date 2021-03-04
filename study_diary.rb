@@ -35,15 +35,6 @@ def menu
   gets.to_i
 end
 
-def register_study_item(id)
-  print 'Digite o título do seu item de estudo: '
-  title = gets.chomp
-  print 'Digite a categoria do seu item de estudo: '
-  category = gets.chomp
-  puts "Item '#{title}' da categoria '#{category}' cadastrado com sucesso!"
-  StudyItem.new(title: title, category: category)
-end
-
 def print_items(collection)
   collection.each do |item|
     puts item
@@ -70,7 +61,7 @@ loop do
   clear
   case option
   when REGISTER
-    study_items << register_study_item(index)
+    study_items << StudyItem.register
     index  += 1
   when VIEW
     print_items(study_items)

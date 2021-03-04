@@ -15,7 +15,16 @@ class StudyItem
   end
 
   def to_s
-    "##{item.id} - #{item.title} - #{item.category}"
+    "##{id} - #{title} - #{category}"
+  end
+
+  def self.register
+    print 'Digite o título do seu item de estudo: '
+    title = gets.chomp
+    print 'Digite a categoria do seu item de estudo: '
+    category = gets.chomp
+    puts "Item '#{title}' da categoria '#{category}' cadastrado com sucesso!"
+    StudyItem.new(title: title, category: category)
   end
 
 end
