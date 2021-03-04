@@ -14,4 +14,8 @@ class StudyItem
     title.include?(query) || category.include?(query)
   end
 
+  def to_s
+    "##{item.id} - #{item.title} - #{item.category}"
+  end
+
 end

@@ -46,7 +46,7 @@ end
 
 def print_items(collection)
   collection.each do |item|
-    puts "##{item.id} - #{item.title} - #{item.category}"
+    puts item
   end
   puts 'Nenhum item encontrado' if collection.empty?
 end
