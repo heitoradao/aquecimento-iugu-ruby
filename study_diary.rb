@@ -41,7 +41,7 @@ def register_study_item(id)
   print 'Digite a categoria do seu item de estudo: '
   category = gets.chomp
   puts "Item '#{title}' da categoria '#{category}' cadastrado com sucesso!"
-  StudyItem.new(id, title, category)
+  StudyItem.new(title, category)
 end
 
 def print_items(collection)
