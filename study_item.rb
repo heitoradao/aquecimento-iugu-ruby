@@ -24,7 +24,7 @@ class StudyItem
     print 'Digite a categoria do seu item de estudo: '
     category = gets.chomp
     puts "Item '#{title}' da categoria '#{category}' cadastrado com sucesso!"
-    StudyItem.new(title: title, category: category)
+    new(title: title, category: category)
   end
 
 end
