@@ -3,7 +3,7 @@ class StudyItem
 
   @@next_id = 1
 
-  def initialize(title, category)
+  def initialize(title:, category:)
     @id = @@next_id
     @title = title
     @category = category
