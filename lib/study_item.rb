@@ -1,5 +1,6 @@
 class StudyItem
-  attr_reader :id, :title, :category
+  attr_reader :id
+  attr_accessor :title, :category
 
   @@next_id = 1
 
