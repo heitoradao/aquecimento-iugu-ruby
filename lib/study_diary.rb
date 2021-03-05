@@ -5,33 +5,36 @@ require 'readline'
 require 'shellwords'
 
 class StudyDiary
+
+  attr_accessor :welcome, :help
+
   def initialize
     @collection = []
+
+    @welcome = <<~WELCOME
+      Bem-vindo ao Diário de Estudos, seu companheiro para estudar!
+      Digite help para ver os comandos.
+
+    WELCOME
+
+    @help = <<~HELP
+      register "title" "category"
+          Cadastrar um item para estudar
+
+      view
+          Ver todos os itens cadastrados
+
+      search "term"
+          Buscar um item de estudo
+
+      exit
+          Sair
+    HELP
   end
 
-  def welcome
-    puts 'Bem-vindo ao Diário de Estudos, seu companheiro para estudar!'
-    puts 'Digite help para ver os comandos.'
-    puts
-  end
 
-
-  def help
-    puts 'register "title" "category"'
-    puts  '   Cadastrar um item para estudar'
-    puts
-
-    puts 'view'
-    puts '    Ver todos os itens cadastrados'
-    puts
-
-    puts 'search "term"'
-    puts '    Buscar um item de estudo'
-    puts
-
-    puts 'exit'
-    puts '    Sair'
-    puts
+  def register(args)
+    @collection.push(StudyItem.new(title: args[0], category: args[1]))
   end
 
 
@@ -40,36 +43,34 @@ class StudyDiary
     if collection.empty?
       puts 'Nenhum item encontrado'
     else
-      collection.each do |item|
-        puts item
-      end
+      puts collection
     end
   end
 
 
   def search_items(term)
     found_items = @collection.filter do |item|
-      item.include?(term)
+      item.include?(term.first)
     end
     print_items(found_items)
   end
 
 
   def repl
-    welcome
+    puts welcome
     loop do
-      option = Readline.readline('> ', true)
-      args = Shellwords.split(option)
+      args = Shellwords.split( Readline.readline('> ', true) )
+      command = args.shift
 
-      if    args[0] == 'register'
-        @collection.push(StudyItem.new(title: args[1], category: args[2]))
-      elsif args[0] == 'view'
+      if    command == 'register'
+        register(args)
+      elsif command == 'view'
         print_items
-      elsif args[0] == 'search'
-        search_items(args[1])
-      elsif args[0] == 'help'
-        help
-      elsif args[0] == 'quit' || args[0] == 'exit'
+      elsif command == 'search'
+        search_items(args)
+      elsif command == 'help'
+        puts help
+      elsif command == 'quit' || command == 'exit'
         break
       end
     end
@@ -83,4 +84,3 @@ if $0 == __FILE__
   diary = StudyDiary.new
   diary.repl
 end
-

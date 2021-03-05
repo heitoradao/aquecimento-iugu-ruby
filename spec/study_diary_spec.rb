@@ -7,18 +7,21 @@ describe StudyDiary do
     expect(study_diary).to be_instance_of(StudyDiary)
   end
 
-  it 'MUST HAVE means to insert new study tracking information' do
+  it 'MUST HAVE means to insert and retrieve study tracking information' do
+    title = 'Guard Clause'
+    category = 'Ruby'
+
     diary = StudyDiary.new
+    diary.register([title, category])
 
-    guard = StudyItem(title: 'Guard Clause', category: 'Ruby')
-    diary.register(guard)
+    stdout_backup = $stdout
+    $stdout = StringIO.new
+    diary.print_items
 
-    expect(false).to eq(true)
-  end
+    resultado = $stdout.string
+    $stdout = stdout_backup
 
-  it 'MUST HAVE means to recover information about study track' do
-    #  open3
-    expect(false).to eq(true)
+    expect(resultado).to eq("#1 - #{title} - #{category}\n")
   end
 
   it 'SHOULD be able to persist study information between sessions' do
