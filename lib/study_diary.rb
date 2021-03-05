@@ -11,8 +11,11 @@ class StudyDiary
   def initialize
     @collection = []
 
-    @welcome = "Bem-vindo ao Diário de Estudos, seu companheiro para estudar!\n" \
-               "Digite help para ver os comandos.\n\n"
+    @welcome = <<~WELCOME
+      Bem-vindo ao Diário de Estudos, seu companheiro para estudar!
+      Digite help para ver os comandos.
+
+    WELCOME
 
     @help = <<~HELP
       register "title" "category"
