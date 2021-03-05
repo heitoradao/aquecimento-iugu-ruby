@@ -1,29 +1,42 @@
 # frozen_string_literal: true
 
 require_relative 'study_item'
-
+require 'readline'
+require 'shellwords'
 
 class StudyDiary
-
-  REGISTER = 1
-  VIEW     = 2
-  SEARCH   = 3
-  EXIT     = 4
+  def initialize
+    @collection = []
+  end
 
   def welcome
-    'Bem-vindo ao Diário de Estudos, seu companheiro para estudar!'
+    puts 'Bem-vindo ao Diário de Estudos, seu companheiro para estudar!'
+    puts 'Digite help para ver os comandos.'
+    puts
   end
 
-  def menu
-    puts "[#{REGISTER}] Cadastrar um item para estudar"
-    puts "[#{VIEW}] Ver todos os itens cadastrados"
-    puts "[#{SEARCH}] Buscar um item de estudo"
-    puts "[#{EXIT}] Sair"
-    print 'Escolha uma opção: '
-    gets.to_i
+
+  def help
+    puts 'register "title" "category"'
+    puts  '   Cadastrar um item para estudar'
+    puts
+
+    puts 'view'
+    puts '    Ver todos os itens cadastrados'
+    puts
+
+    puts 'search "term"'
+    puts '    Buscar um item de estudo'
+    puts
+
+    puts 'exit'
+    puts '    Sair'
+    puts
   end
 
-  def print_items(collection)
+
+  def print_items(collection = nil)
+    collection ||= @collection
     if collection.empty?
       puts 'Nenhum item encontrado'
     else
@@ -33,55 +46,41 @@ class StudyDiary
     end
   end
 
-  def search_items(collection)
-    print 'Digite uma palavra para procurar: '
-    term = gets.chomp
-    found_items = collection.filter do |item|
+
+  def search_items(term)
+    found_items = @collection.filter do |item|
       item.include?(term)
     end
     print_items(found_items)
+  end
+
+
+  def repl
+    welcome
+    loop do
+      option = Readline.readline('> ', true)
+      args = Shellwords.split(option)
+
+      if    args[0] == 'register'
+        @collection.push(StudyItem.new(title: args[1], category: args[2]))
+      elsif args[0] == 'view'
+        print_items
+      elsif args[0] == 'search'
+        search_items(args[1])
+      elsif args[0] == 'help'
+        help
+      elsif args[0] == 'quit' || args[0] == 'exit'
+        break
+      end
+    end
   end
 end
 
 
 
-def clear
-  system('clear')
-end
-
-def wait_keypress
-  puts
-  puts 'Pressione enter para continuar'
-  gets
-end
-
-def wait_keypress_then_clear
-  wait_keypress
-  clear
-end
-
-
 
 if $0 == __FILE__
-  study_diary = StudyDiary.new
-  study_items = []
-
-  clear()
-  puts study_diary.welcome
-  option = 0
-
-  begin
-    clear()
-    option = study_diary.menu
-
-    case option
-    when StudyDiary::REGISTER
-      study_items << StudyItem.register
-    when StudyDiary::VIEW
-      study_diary.print_items(study_items)
-    when StudyDiary::SEARCH
-      study_diary.search_items(study_items)
-    end
-    wait_keypress_then_clear
-  end until StudyDiary::EXIT == option
+  diary = StudyDiary.new
+  diary.repl
 end
+
